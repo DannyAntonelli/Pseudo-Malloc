@@ -1,11 +1,6 @@
 #include "bitset.h"
-
-typedef struct
-{
-    uint8_t *buffer;
-    size_t num_bits;
-    size_t buffer_size;
-} bitset_t;
+#include <assert.h>
+#include <string.h>
 
 void bitset_init(bitset_t *bitset, size_t num_bits, uint8_t *buffer, size_t buffer_size)
 {
