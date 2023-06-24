@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdlib.h>
+
 /**
  * @brief Initialize the memory allocator
  *
@@ -31,7 +33,7 @@ void *mycalloc(size_t nmemb, size_t size);
  * @param size New size of the block
  * @return void* Pointer to the reallocated block
  */
-void myrealloc(void *ptr, size_t size);
+void *myrealloc(void *ptr, size_t size);
 
 /**
  * @brief Free a block of memory
