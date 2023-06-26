@@ -3,6 +3,11 @@
 #include "mmap_allocator.h"
 #include "unittest.h"
 
+/**
+ * @brief Test mmap_malloc
+ *
+ * @return int 0 if successful, 1 otherwise.
+ */
 int test_malloc()
 {
     void *ptr = mmap_malloc(10);
