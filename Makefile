@@ -16,7 +16,7 @@ TEST_OBJS := $(patsubst $(TESTDIR)/%.c, $(OBJDIR)/%.o, $(TEST_SOURCES))
 
 # Compiler options
 CC := gcc
-CFLAGS := -c -Wall -Wextra -std=gnu99 -g -I$(SRCDIR)
+CFLAGS := -c -Wall -Wextra -std=gnu99 -g -I$(SRCDIR) -DENABLE_LOGGING
 
 # Target and dependencies
 TARGET := $(OBJDIR)/main
