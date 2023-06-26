@@ -12,7 +12,7 @@ void bitset_init(bitset_t *bitset, size_t num_bits, uint8_t *buffer, size_t buff
 
 void bitset_set(bitset_t *bitset, size_t bit, bool value)
 {
-    assert(bit >= 0 && bit < bitset->num_bits);
+    assert(bit < bitset->num_bits);
     size_t byte = bit / 8;
     size_t bit_in_byte = bit % 8;
     uint8_t mask = 1 << bit_in_byte;
@@ -28,7 +28,7 @@ void bitset_set(bitset_t *bitset, size_t bit, bool value)
 
 bool bitset_get(bitset_t *bitset, size_t bit)
 {
-    assert(bit >= 0 && bit < bitset->num_bits);
+    assert(bit < bitset->num_bits);
     size_t byte = bit / 8;
     size_t bit_in_byte = bit % 8;
     uint8_t mask = 1 << bit_in_byte;

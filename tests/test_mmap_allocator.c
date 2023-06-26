@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "../mmap_allocator.h"
+#include "mmap_allocator.h"
 #include "unittest.h"
 
 int test_malloc()
@@ -9,7 +9,7 @@ int test_malloc()
     return ptr == NULL;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     TEST(test_malloc);
 

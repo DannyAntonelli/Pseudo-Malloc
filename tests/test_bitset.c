@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "../bitset.h"
+#include "bitset.h"
 #include "unittest.h"
 
 /**
@@ -49,7 +49,7 @@ int test_get()
     return value ? 0 : 1;
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     TEST(test_init);
     TEST(test_set);

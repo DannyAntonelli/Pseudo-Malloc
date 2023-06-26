@@ -13,12 +13,12 @@ void *mmap_malloc(size_t size)
     }
     *((size_t *)ptr) = size;
     LOG(LOG_LEVEL_INFO, "mmap_malloc(%zu) = %p", size, ptr + sizeof(size_t));
-    return ptr + sizeof(size_t);
+    return (size_t *)ptr + 1;
 }
 
 void mmap_free(void *ptr)
 {
-    size_t size = *((size_t *)(ptr - sizeof(size_t)));
+    size_t size = *((size_t *)ptr - 1);
     if (munmap(ptr - sizeof(size_t), size + sizeof(size_t)) == -1)
     {
         LOG(LOG_LEVEL_ERROR, "munmap failed");
