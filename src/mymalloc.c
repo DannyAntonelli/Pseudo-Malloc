@@ -14,7 +14,6 @@ bitset_t bitset;
 
 void mymalloc_init()
 {
-    int num_bits = (1 << BUDDY_MAX_LEVELS) - 1;
     bitset_init(&bitset, bitset_buffer, sizeof(bitset_buffer));
     bitset_set(&bitset, 0, BUDDY_FREE);
     buddy_allocator_init(&buddy_allocator, &bitset, (void *)data_buffer, BUDDY_MAX_LEVELS, BUDDY_MIN_BUCKET_SIZE);
