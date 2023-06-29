@@ -4,16 +4,34 @@
 #include "buddy_allocator.h"
 #include "logging.h"
 
+/**
+ * @brief Gets the index of the parent of a node.
+ *
+ * @param idx The index of the node.
+ * @return size_t The index of the parent.
+ */
 size_t parent(size_t idx)
 {
     return (idx - 1) / 2;
 }
 
+/**
+ * @brief Gets the index of the left child of a node.
+ *
+ * @param idx The index of the node.
+ * @return size_t The index of the left child.
+ */
 size_t left_child(size_t idx)
 {
     return 2 * idx + 1;
 }
 
+/**
+ * @brief Gets the index of the right child of a node.
+ *
+ * @param idx The index of the node.
+ * @return size_t The index of the right child.
+ */
 size_t right_child(size_t idx)
 {
     return 2 * idx + 2;
@@ -27,6 +45,13 @@ void buddy_allocator_init(buddy_allocator_t *allocator, bitset_t *bitset, void *
     allocator->min_bucket_size = min_bucket_size;
 }
 
+/**
+ * @brief Gets the minimum level for a given size.
+ *
+ * @param allocator The allocator to get the level from.
+ * @param size The size to get the level for.
+ * @return size_t The level.
+ */
 size_t buddy_allocator_get_min_level(buddy_allocator_t *allocator, size_t size)
 {
     size_t curr_size = allocator->min_bucket_size;
@@ -39,6 +64,13 @@ size_t buddy_allocator_get_min_level(buddy_allocator_t *allocator, size_t size)
     return level;
 }
 
+/**
+ * @brief Searches for a free buddy in the allocator.
+ *
+ * @param bitset The bitset to search.
+ * @param level The level of the buddy to search for.
+ * @return ssize_t The index of the buddy or -1 if none available.
+ */
 ssize_t search_free_buddy(bitset_t *bitset, size_t level)
 {
     size_t start_idx = (1 << level) - 1;
@@ -53,6 +85,13 @@ ssize_t search_free_buddy(bitset_t *bitset, size_t level)
     return -1;
 }
 
+/**
+ * @brief Gets a free buddy from the allocator.
+ *
+ * @param allocator The allocator to get from.
+ * @param level The level of the buddy to get.
+ * @return ssize_t The index of the buddy or -1 if none available.
+ */
 ssize_t buddy_allocator_get_free_buddy_idx(buddy_allocator_t *allocator, ssize_t level)
 {
     assert(level <= (ssize_t)allocator->levels);
@@ -81,6 +120,13 @@ ssize_t buddy_allocator_get_free_buddy_idx(buddy_allocator_t *allocator, ssize_t
     return left_child(parent_idx);
 }
 
+/**
+ * @brief Releases a buddy in the allocator.
+ *
+ * @param allocator The allocator to release from.
+ * @param idx The index of the buddy to release.
+ * @return void
+ */
 void buddy_allocator_release_buddy(buddy_allocator_t *allocator, size_t idx)
 {
     assert(idx < (size_t)(1 << allocator->levels) - 1);
