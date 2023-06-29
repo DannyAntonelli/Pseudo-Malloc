@@ -25,7 +25,7 @@ int test_mycalloc()
 {
     mymalloc_init();
     void *ptr = mycalloc(10, 10);
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 100; i++)
     {
         if (((uint8_t *)ptr)[i] != 0)
         {
@@ -50,6 +50,10 @@ int test_myrealloc()
 
 int main()
 {
+    TEST(test_mymalloc);
+    TEST(test_mycalloc);
+    TEST(test_myrealloc);
+
     printf("Tests passed: %d\n", passed);
     printf("Tests failed: %d\n", failed);
 
