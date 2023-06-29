@@ -2,6 +2,9 @@
 
 #include "bitset.h"
 
+#define BUDDY_OCCUPIED 0
+#define BUDDY_FREE 1
+
 typedef struct
 {
     bitset_t *bitset;
