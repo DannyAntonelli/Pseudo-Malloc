@@ -10,6 +10,11 @@
 #define NUMBER_OF_BUDDIES (1 << BUDDY_MAX_LEVELS) - 1
 #define BITSET_SIZE (NUMBER_OF_BUDDIES + 7) >> 3
 
+/**
+ * @brief Test the initialization of the allocator
+ *
+ * @return int 0 if the test passed, 1 otherwise
+ */
 int test_init()
 {
     buddy_allocator_t allocator;
@@ -25,6 +30,11 @@ int test_init()
              allocator.min_bucket_size == BUDDY_MIN_BUCKET_SIZE);
 }
 
+/**
+ * @brief Test the allocation of a block of memory
+ *
+ * @return int 0 if the test passed, 1 otherwise
+ */
 int test_alloc()
 {
     buddy_allocator_t allocator;
@@ -40,6 +50,11 @@ int test_alloc()
     return ptr == NULL;
 }
 
+/**
+ * @brief Test the allocation of a block of memory that exceeds the memory limit
+ *
+ * @return int 0 if the test passed, 1 otherwise
+ */
 int test_memory_limit_exceeded()
 {
     buddy_allocator_t allocator;
@@ -56,6 +71,11 @@ int test_memory_limit_exceeded()
     return ptr1 == NULL || ptr2 != NULL;
 }
 
+/**
+ * @brief Test allocating and freeing a block of memory and then allocating a block of the same size
+ *
+ * @return int 0 if the test passed, 1 otherwise
+ */
 int test_free_and_alloc_same_address()
 {
     buddy_allocator_t allocator;
