@@ -8,14 +8,15 @@
 #include "mymalloc.h"
 
 buddy_allocator_t buddy_allocator;
-uint8_t bitmap_buffer[((1 << BUDDY_MAX_LEVELS) - 6) / 8];
+uint8_t bitset_buffer[BITSET_SIZE];
 uint8_t data_buffer[BUDDY_MEMORY_LIMIT];
+bitset_t bitset;
 
 void mymalloc_init()
 {
-    bitset_t bitset;
     int num_bits = (1 << BUDDY_MAX_LEVELS) - 1;
-    bitset_init(&bitset, num_bits, bitmap_buffer, sizeof(bitmap_buffer));
+    bitset_init(&bitset, num_bits, bitset_buffer, sizeof(bitset_buffer));
+    bitset_set(&bitset, 0, BUDDY_FREE);
     buddy_allocator_init(&buddy_allocator, &bitset, (void *)data_buffer, BUDDY_MAX_LEVELS, BUDDY_MIN_BUCKET_SIZE);
 }
 
@@ -23,12 +24,12 @@ void *mymalloc(size_t size)
 {
     if (size < (size_t)getpagesize() / 4U)
     {
-        LOG(LOG_LEVEL_INFO, "Allocating buddy memory %zu", size);
+        LOG(LOG_LEVEL_INFO, "Allocating buddy memory: %zu bytes", size);
         return buddy_allocator_malloc(&buddy_allocator, size);
     }
     else
     {
-        LOG(LOG_LEVEL_INFO, "Allocating mmap memory %zu", size);
+        LOG(LOG_LEVEL_INFO, "Allocating mmap memory: %zu bytes", size);
         return mmap_malloc(size);
     }
 }
