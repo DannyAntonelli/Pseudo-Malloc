@@ -6,7 +6,7 @@
 
 #define BUDDY_MEMORY_LIMIT (1 << 20)
 #define BUDDY_MAX_LEVELS 10
-#define BUDDY_MIN_BUCKET_SIZE (BUDDY_MEMORY_LIMIT >> BUDDY_MAX_LEVELS)
+#define BUDDY_MIN_BUCKET_SIZE (BUDDY_MEMORY_LIMIT >> (BUDDY_MAX_LEVELS - 1))
 #define NUMBER_OF_BUDDIES (1 << BUDDY_MAX_LEVELS) - 1
 #define BITSET_SIZE (NUMBER_OF_BUDDIES + 7) >> 3
 
@@ -50,9 +50,10 @@ int test_memory_limit_exceeded()
     bitset_set(&bitset, 0, BUDDY_FREE);
     buddy_allocator_init(&allocator, &bitset, (void *)data, BUDDY_MAX_LEVELS, BUDDY_MIN_BUCKET_SIZE);
 
-    void *ptr = buddy_allocator_malloc(&allocator, BUDDY_MEMORY_LIMIT + 1);
+    void *ptr1 = buddy_allocator_malloc(&allocator, BUDDY_MEMORY_LIMIT - sizeof(size_t));
+    void *ptr2 = buddy_allocator_malloc(&allocator, 1);
 
-    return ptr != NULL;
+    return ptr1 == NULL || ptr2 != NULL;
 }
 
 int test_free_and_alloc_same_address()
