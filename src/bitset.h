@@ -7,7 +7,6 @@
 typedef struct
 {
     uint8_t *buffer;
-    size_t num_bits;
     size_t buffer_size;
 } bitset_t;
 
@@ -19,7 +18,7 @@ typedef struct
  * @param buffer The buffer to use for the bitset.
  * @param buffer_size The size of the buffer.
  */
-void bitset_init(bitset_t *bitset, size_t num_bits, uint8_t *buffer, size_t buffer_size);
+void bitset_init(bitset_t *bitset, uint8_t *buffer, size_t buffer_size);
 
 /**
  * @brief Sets a bit in the bitset.

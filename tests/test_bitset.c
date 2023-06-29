@@ -12,9 +12,9 @@ int test_init()
 {
     bitset_t bitset;
     uint8_t buffer[10];
-    bitset_init(&bitset, 15, buffer, 10);
+    bitset_init(&bitset, buffer, 10);
 
-    return !(bitset.buffer == buffer && bitset.num_bits == 15 && bitset.buffer_size == 10);
+    return !(bitset.buffer == buffer && bitset.buffer_size == 10);
 }
 
 /**
@@ -26,7 +26,7 @@ int test_set()
 {
     bitset_t bitset;
     uint8_t buffer[5];
-    bitset_init(&bitset, 12, buffer, 5);
+    bitset_init(&bitset, buffer, 5);
     bitset_set(&bitset, 10, true);
 
     int value = (bitset.buffer[1] & 0b00000100) != 0;
@@ -42,7 +42,7 @@ int test_get()
 {
     bitset_t bitset;
     uint8_t buffer[5];
-    bitset_init(&bitset, 17, buffer, 5);
+    bitset_init(&bitset, buffer, 5);
     bitset.buffer[1] = 0b00000100;
 
     int value = bitset_get(&bitset, 10);
