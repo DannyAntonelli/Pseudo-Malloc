@@ -3,8 +3,10 @@
 #include <stdlib.h>
 
 #define BUDDY_MEMORY_LIMIT (1 << 20)
-#define BUDDY_MAX_LEVELS 16
-#define BUDDY_MIN_BUCKET_SIZE (BUDDY_MEMORY_LIMIT >> BUDDY_MAX_LEVELS)
+#define BUDDY_MAX_LEVELS 10
+#define BUDDY_MIN_BUCKET_SIZE (BUDDY_MEMORY_LIMIT >> (BUDDY_MAX_LEVELS - 1))
+#define NUMBER_OF_BUDDIES (1 << BUDDY_MAX_LEVELS) - 1
+#define BITSET_SIZE (NUMBER_OF_BUDDIES + 7) >> 3
 
 /**
  * @brief Initialize the memory allocator
