@@ -46,6 +46,7 @@ int test_alloc()
     buddy_allocator_init(&allocator, &bitset, (void *)data, BUDDY_MAX_LEVELS, BUDDY_MIN_BUCKET_SIZE);
 
     void *ptr = buddy_allocator_malloc(&allocator, 1);
+    buddy_allocator_free(&allocator, ptr);
 
     return ptr == NULL;
 }
@@ -67,6 +68,7 @@ int test_memory_limit_exceeded()
 
     void *ptr1 = buddy_allocator_malloc(&allocator, BUDDY_MEMORY_LIMIT - sizeof(size_t));
     void *ptr2 = buddy_allocator_malloc(&allocator, 1);
+    buddy_allocator_free(&allocator, ptr1);
 
     return ptr1 == NULL || ptr2 != NULL;
 }
@@ -89,6 +91,7 @@ int test_free_and_alloc_same_address()
     void *ptr1 = buddy_allocator_malloc(&allocator, 1);
     buddy_allocator_free(&allocator, ptr1);
     void *ptr2 = buddy_allocator_malloc(&allocator, 1);
+    buddy_allocator_free(&allocator, ptr2);
 
     return ptr1 != ptr2;
 }
