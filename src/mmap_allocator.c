@@ -16,9 +16,14 @@ void *mmap_malloc(size_t size)
     return (size_t *)ptr + 1;
 }
 
+size_t mmap_get_allocated_size(void *ptr)
+{
+    return *((size_t *)ptr - 1);
+}
+
 void mmap_free(void *ptr)
 {
-    size_t size = *((size_t *)ptr - 1);
+    size_t size = mmap_get_allocated_size(ptr);
     if (munmap(ptr - sizeof(size_t), size + sizeof(size_t)) == -1)
     {
         LOG(LOG_LEVEL_ERROR, "munmap failed");

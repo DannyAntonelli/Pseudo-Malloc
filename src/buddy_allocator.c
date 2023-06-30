@@ -5,6 +5,17 @@
 #include "logging.h"
 
 /**
+ * @brief Gets the level from an index.
+ *
+ * @param idx The index to get the level from.
+ * @return size_t The level.
+ */
+size_t level_from_idx(size_t idx)
+{
+    return sizeof(size_t) * 8 - __builtin_clzll(idx) - 1;
+}
+
+/**
  * @brief Gets the index of the parent of a node.
  *
  * @param idx The index of the node.
@@ -151,6 +162,18 @@ void buddy_allocator_release_buddy(buddy_allocator_t *allocator, size_t idx)
     }
 }
 
+/**
+ * @brief Computes the size of a buddy given the level.
+ *
+ * @param allocator The allocator used.
+ * @param level The level of the buddy.
+ * @return size_t The size of the buddy.
+ */
+size_t buddy_allocator_get_buddy_size(buddy_allocator_t *allocator, size_t level)
+{
+    return allocator->min_bucket_size * (1 << (allocator->levels - level - 1));
+}
+
 void *buddy_allocator_malloc(buddy_allocator_t *allocator, size_t size)
 {
     size_t level = buddy_allocator_get_min_level(allocator, size + sizeof(size_t));
@@ -161,9 +184,8 @@ void *buddy_allocator_malloc(buddy_allocator_t *allocator, size_t size)
         return NULL;
     }
 
-    size_t buddy_size = allocator->min_bucket_size * (1 << (allocator->levels - level - 1));
     size_t idx_in_level = idx - ((1 << level) - 1);
-    size_t *ptr = (size_t *)(allocator->data + (buddy_size * idx_in_level));
+    size_t *ptr = (size_t *)(allocator->data + (buddy_allocator_get_buddy_size(allocator, level) * idx_in_level));
     *ptr = (size_t)idx;
 
     LOG(LOG_LEVEL_INFO, "Allocated buddy at index %zu", idx);
@@ -175,4 +197,11 @@ void buddy_allocator_free(buddy_allocator_t *allocator, void *ptr)
     size_t idx = *((size_t *)ptr - 1);
     LOG(LOG_LEVEL_INFO, "Freeing buddy at index %zu", idx);
     buddy_allocator_release_buddy(allocator, idx);
+}
+
+size_t buddy_allocator_get_allocated_size(buddy_allocator_t *allocator, void *ptr)
+{
+    size_t idx = *((size_t *)ptr - 1);
+    size_t level = level_from_idx(idx);
+    return buddy_allocator_get_buddy_size(allocator, level);
 }

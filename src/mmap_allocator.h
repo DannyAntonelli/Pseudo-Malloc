@@ -15,3 +15,11 @@ void *mmap_malloc(size_t size);
  * @return void
  */
 void mmap_free(void *ptr);
+
+/**
+ * @brief Get the allocated size of a block of memory
+ *
+ * @param ptr Pointer to memory to get the size of
+ * @return size_t Size of memory
+ */
+size_t mmap_get_allocated_size(void *ptr);

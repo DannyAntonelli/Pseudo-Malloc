@@ -42,3 +42,12 @@ void *buddy_allocator_malloc(buddy_allocator_t *allocator, size_t size);
  * @return void
  */
 void buddy_allocator_free(buddy_allocator_t *allocator, void *ptr);
+
+/**
+ * @brief Gets the allocated size of a block of memory.
+ *
+ * @param allocator The allocator to get the size from.
+ * @param ptr The pointer to the block to get the size of.
+ * @return size_t The size of the block.
+ */
+size_t buddy_allocator_get_allocated_size(buddy_allocator_t *allocator, void *ptr);

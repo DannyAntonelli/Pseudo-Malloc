@@ -13,6 +13,7 @@ int test_mymalloc()
 {
     mymalloc_init();
     void *ptr = mymalloc(10);
+    myfree(ptr);
     return ptr == NULL;
 }
 
@@ -32,6 +33,7 @@ int test_mycalloc()
             return 1;
         }
     }
+    myfree(ptr);
     return ptr == NULL;
 }
 
@@ -43,9 +45,25 @@ int test_mycalloc()
 int test_myrealloc()
 {
     mymalloc_init();
-    void *ptr = mymalloc(10);
-    ptr = myrealloc(ptr, 20);
-    return ptr == NULL;
+    int *old_ptr = mymalloc(10 * sizeof(int));
+    for (int i = 0; i < 10; i++)
+    {
+        old_ptr[i] = i;
+    }
+    int *new_ptr = myrealloc(old_ptr, 20 * sizeof(int));
+    if (new_ptr == NULL)
+    {
+        return 1;
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        if (new_ptr[i] != i)
+        {
+            return 1;
+        }
+    }
+    myfree(new_ptr);
+    return 0;
 }
 
 int main()
